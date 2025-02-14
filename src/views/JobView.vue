@@ -1,16 +1,34 @@
 <script setup>
-import { RouterLink, useRoute } from 'vue-router';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
-import axios from 'axios';
 import { reactive, onMounted } from 'vue';
 import BackButton from '../components/BackButton.vue';
+import { useToast } from 'vue-toastification';
+
+import axios from 'axios';
 
 const route = useRoute();
+const router = useRouter();
+const toast = useToast();
 const jobId = route.params.id;
 const state = reactive({
   job: null,
   isLoading: true,
 })
+
+const deleteJob = async () => {
+  try {
+    const confirm = window.confirm('Are you sure you want to delete this job?')
+    if (confirm) {
+      await axios.delete(`/api/jobs/${jobId}`)
+      toast.success('Job deleted successfully')
+      router.push('/jobs')
+    }
+  } catch (error) {
+    console.error('Error deleting job', error)
+    toast.error('Error deleting job')
+  }
+}
 
 onMounted(async () => {
   try {
@@ -34,11 +52,11 @@ onMounted(async () => {
             <div class="text-gray-500 mb-4">
               {{state.job.type}}
             </div>
-            <h1 class="text-3xl font-bold mb-4">
+            <h1 class="text-3xl font-bold mb-4 break-words overflow-hidden">
               {{state.job.title}}
             </h1>
-            <div class="text-gray-500 mb-4 flex align-middle justify-center md:justify-start">
-              <i class="pi pi-map-marker text-lg text-orange-700 mr-2"></i>
+            <div class="text-gray-500 items-center mb-4 flex align-middle justify-center md:justify-start">
+              <i class="pi pi-map-marker text-orange-700 mr-2"></i>
               <p class="text-orange-700">
                 {{state.job.location}}
               </p>
@@ -49,7 +67,7 @@ onMounted(async () => {
             <h3 class="text-green-800 text-lg font-bold mb-6">
               Job Description
             </h3>
-            <p class="mb-4">
+            <p class="mb-4 break-words overflow-hidden whitespace-normal">
               {{state.job.description}}
             </p>
             <h3 class="text-green-800 text-lg font-bold mb-2">
@@ -71,20 +89,20 @@ onMounted(async () => {
             <h2 class="text-2xl">
               {{state.job.company.name}}
             </h2>
-            <p class="my-2">
+            <p class="my-2 break-words overflow-hidden whitespace-normal">
               {{state.job.company.description}}
             </p>
             <hr class="my-4" />
             <h3 class="text-xl">
               Contact Email:
             </h3>
-            <p class="my-2 bg-green-100 p-2 font-bold">
+            <p class="my-2 bg-green-100 p-2 font-bold break-all overflow-hidden">
               {{state.job.company.contactEmail}}
             </p>
             <h3 class="text-xl">
               Contact Phone:
             </h3>
-            <p class="my-2 bg-green-100 p-2 font-bold">
+            <p class="my-2 bg-green-100 p-2 font-bold break-all overflow-hidden">
               {{state.job.company.contactPhone}}
             </p>
           </div>
@@ -101,7 +119,8 @@ onMounted(async () => {
               Edit Job
             </RouterLink>
             <button
-              class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"
+              class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block cursor-pointer"
+              @click="deleteJob"
             >
               Delete Job
             </button>
