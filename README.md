@@ -2,6 +2,8 @@
 
 A simple job board application built with Vue 3, demonstrating basic CRUD operations and responsive design using Tailwind CSS. This project serves as a learning exercise to understand Vue fundamentals after having done a similar project with React, which has more features. 
 
+---
+
 ## Features
 
 - View list of job postings
@@ -10,6 +12,8 @@ A simple job board application built with Vue 3, demonstrating basic CRUD operat
 - Edit existing job postings
 - Delete job postings
 - Responsive design using Tailwind CSS
+
+---
 
 ## Technologies Used
 
@@ -20,10 +24,14 @@ A simple job board application built with Vue 3, demonstrating basic CRUD operat
 - Axios for API calls
 - PrimeVue for UI components
 
+---
+
 ## Prerequisites
 
 - Node.js (v14 or higher)
 - npm
+
+---
 
 ## Installation
 
